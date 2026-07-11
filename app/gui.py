@@ -4,7 +4,8 @@ from customtkinter import CTkImage
 from tkinter import filedialog
 import customtkinter as ctk
 import threading
-
+import app.downloader
+print(app.downloader.__file__)
 
 def format_duration(seconds):
 

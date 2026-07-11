@@ -31,10 +31,12 @@ class Downloader:
 
     @staticmethod
     def download_video(url, format_id, download_folder="downloads", progress_callback=None):
+        print("===== MY DOWNLOADER =====")
 
-        os.makedirs("download_folder", exist_ok=True)
+        os.makedirs(download_folder, exist_ok=True)
 
         def hook(data):
+            print("HOOK:", data.get("status"))
             if progress_callback:
                 progress_callback(data)
 
@@ -55,7 +57,7 @@ class Downloader:
                     }
                 ],
             }
-
+            print(options)
         # -----------------------------
         # Video Download
         # -----------------------------
@@ -67,6 +69,6 @@ class Downloader:
                 "progress_hooks": [hook],
                 "merge_output_format": "mp4",
             }
-
+            print(options)
         with YoutubeDL(options) as ydl:
             ydl.download([url])
