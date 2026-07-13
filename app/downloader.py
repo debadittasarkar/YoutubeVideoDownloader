@@ -68,6 +68,7 @@ class Downloader:
                 "outtmpl": f"{download_folder}/%(title)s.%(ext)s",
                 "progress_hooks": [hook],
                 "merge_output_format": "mp4",
+                "quiet": True,
             }
             print(options)
         with YoutubeDL(options) as ydl:
