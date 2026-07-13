@@ -1,7 +1,17 @@
 from yt_dlp import YoutubeDL
 from app.format_manager import FormatManager
 import os
+import sys
 
+# -----------------------------
+# FFmpeg Path
+# -----------------------------
+if getattr(sys, "frozen", False):
+    BASE_DIR = sys._MEIPASS
+else:
+    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+FFMPEG_PATH = os.path.join(BASE_DIR, "ffmpeg")
 
 class Downloader:
 
@@ -49,6 +59,7 @@ class Downloader:
                 "format": "bestaudio/best",
                 "outtmpl": f"{download_folder}/%(title)s.%(ext)s",
                 "progress_hooks": [hook],
+                "ffmpeg_location": FFMPEG_PATH,
                 "postprocessors": [
                     {
                         "key": "FFmpegExtractAudio",
@@ -68,6 +79,7 @@ class Downloader:
                 "outtmpl": f"{download_folder}/%(title)s.%(ext)s",
                 "progress_hooks": [hook],
                 "merge_output_format": "mp4",
+                "ffmpeg_location": FFMPEG_PATH,
                 "quiet": True,
             }
             print(options)

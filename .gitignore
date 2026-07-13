@@ -1,11 +1,20 @@
 # Python
 __pycache__/
-*.py[cod]
-*.so
+*.pyc
+*.pyo
+*.pyd
 
 # Virtual Environment
 .venv/
 venv/
+
+# PyInstaller
+build/
+dist/
+*.spec
+
+# Downloads
+downloads/
 
 # IDE
 .vscode/
@@ -14,12 +23,3 @@ venv/
 # OS
 .DS_Store
 Thumbs.db
-
-# Downloads
-downloads/
-
-# Environment Variables
-.env
-
-# Logs
-*.log
