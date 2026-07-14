@@ -7,9 +7,11 @@ import sys
 # FFmpeg Path
 # -----------------------------
 if getattr(sys, "frozen", False):
+    # Running from PyInstaller EXE
     BASE_DIR = sys._MEIPASS
 else:
-    BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+    # Running from source code
+    BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 FFMPEG_PATH = os.path.join(BASE_DIR, "ffmpeg")
 
@@ -21,6 +23,7 @@ class Downloader:
         options = {
             "quiet": True,
             "skip_download": True,
+            # "cookiesfrombrowser": ("chrome",)
         }
 
         with YoutubeDL(options) as ydl:
@@ -59,7 +62,8 @@ class Downloader:
                 "format": "bestaudio/best",
                 "outtmpl": f"{download_folder}/%(title)s.%(ext)s",
                 "progress_hooks": [hook],
-                "ffmpeg_location": FFMPEG_PATH,
+                # "ffmpeg_location": FFMPEG_PATH,
+                # "cookiesfrombrowser": ("chrome",),
                 "postprocessors": [
                     {
                         "key": "FFmpegExtractAudio",
@@ -68,7 +72,10 @@ class Downloader:
                     }
                 ],
             }
-            print(options)
+            # Use bundled FFmpeg only on Windows EXE
+        if getattr(sys, "frozen", False) and sys.platform.startswith("win"):
+            options["ffmpeg_location"] = FFMPEG_PATH
+            # print(options)
         # -----------------------------
         # Video Download
         # -----------------------------
@@ -79,9 +86,13 @@ class Downloader:
                 "outtmpl": f"{download_folder}/%(title)s.%(ext)s",
                 "progress_hooks": [hook],
                 "merge_output_format": "mp4",
-                "ffmpeg_location": FFMPEG_PATH,
+                # "ffmpeg_location": FFMPEG_PATH,
+                # "cookiesfrombrowser": ("chrome",),
                 "quiet": True,
             }
-            print(options)
+        # Use bundled FFmpeg only on Windows EXE
+        if getattr(sys, "frozen", False) and sys.platform.startswith("win"):
+            options["ffmpeg_location"] = FFMPEG_PATH
+            # print(options)
         with YoutubeDL(options) as ydl:
             ydl.download([url])
